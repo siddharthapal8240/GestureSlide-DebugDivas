@@ -18,7 +18,7 @@ const PricingSection = () => {
       buttonText: "Create a free account",
       highlighted: true,
       gradient: "border-2 border-blue-400 text-white",
-      extraPadding: "pb-20", 
+      extraPadding: "pb-20",
     },
     {
       name: "Essentials",
@@ -60,9 +60,7 @@ const PricingSection = () => {
 
   return (
     <div className="py-20 bg-gray-900 text-white text-center">
-      <h2 className="text-3xl font-extrabold sm:text-4xl">
-        Ready to start with GestureSlide?
-      </h2>
+      <h2 className="text-3xl font-extrabold sm:text-4xl">Ready to start with GestureSlide?</h2>
       <p className="mt-4 text-gray-400">Choose the package that suits you.</p>
       <div className="mt-6 flex justify-center items-center">
         <span className="text-sm text-gray-300">Monthly</span>
@@ -96,26 +94,19 @@ const PricingSection = () => {
           >
             <h3 className="text-xl font-bold">{plan.name}</h3>
             <p className="mt-4 text-4xl font-extrabold">{plan.price}</p>
-            <p className="text-sm text-gray-300">
-              {isYearly ? "/year" : "/month"}
-            </p>
+            <p className="text-sm text-gray-300">{isYearly ? "/year" : "/month"}</p>
             <ul className="mt-6 space-y-3 text-gray-300">
               {plan.features.map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-center whitespace-nowrap"
-                >
+                <li key={feature} className="flex items-center whitespace-nowrap">
                   <span className="text-blue-400 mr-2">✔</span> {feature}
                 </li>
               ))}
             </ul>
-            <button
-              className={`mt-6 w-full font-bold py-3 rounded-lg transition ${
-                plan.highlighted
-                  ? "border-2 border-blue-400 text-blue-400 hover:bg-gray-900"
-                  : "bg-blue-500 text-white hover:bg-blue-600"
-              }`}
-            >
+            <button className={`mt-6 w-full font-bold py-3 rounded-lg transition ${
+              plan.highlighted
+                ? "border-2 border-blue-400 text-blue-400 hover:bg-gray-900"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}>
               {plan.buttonText}
             </button>
           </motion.div>
