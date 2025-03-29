@@ -13,7 +13,7 @@ const Navbar = () => {
           </div>
           {!isDashboard && (
             <div className="flex items-center space-x-4">
-              <Link to="/login" className="text-gray-300 hover:text-blue-400">Login</Link>
+              
               <Link to="/dashboard" className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-300">
                 Get Started
               </Link>
