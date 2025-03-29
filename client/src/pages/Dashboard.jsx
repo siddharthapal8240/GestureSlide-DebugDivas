@@ -9,7 +9,7 @@ const Dashboard = () => {
   const [uploadMessage, setUploadMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState(''); // Store the Cloudinary URL
+  const [pdfUrl, setPdfUrl] = useState(''); 
   const [presentations] = useState([
     { id: 1, name: 'Q1 Review', date: '2025-03-15', slides: 24 },
     { id: 2, name: 'Product Launch', date: '2025-03-10', slides: 18 },
@@ -22,7 +22,7 @@ const Dashboard = () => {
       setSelectedFile(file);
       setUploadMessage('');
       setIsUploaded(false);
-      setPdfUrl(''); // Reset PDF URL when a new file is selected
+      setPdfUrl(''); 
     }
   };
 
@@ -53,7 +53,7 @@ const Dashboard = () => {
       });
       setUploadMessage('File uploaded successfully');
       setIsUploaded(true);
-      setPdfUrl(response.data.pdfUrl); // Store the returned Cloudinary URL
+      setPdfUrl(response.data.pdfUrl); 
     } catch (error) {
       setUploadMessage('Upload failed. Please try again.');
       console.error('Upload error:', error);
@@ -248,7 +248,7 @@ const Dashboard = () => {
                       )}
 
                       {uploadMessage && (
-                        <p className={mt-4 ${uploadMessage.includes('failed') ? 'text-red-400' : 'text-green-400'}}>
+                        <p className={`mt-4 ${uploadMessage.includes('failed') ? 'text-red-400' : 'text-green-400'}`}>
                           {uploadMessage}
                         </p>
                       )}
