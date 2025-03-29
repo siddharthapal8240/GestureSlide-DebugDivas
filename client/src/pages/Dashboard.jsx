@@ -248,7 +248,7 @@ const Dashboard = () => {
                       )}
 
                       {uploadMessage && (
-                        <p className={mt-4 ${uploadMessage.includes('failed') ? 'text-red-400' : 'text-green-400'}}>
+                        <p className={`mt-4 ${uploadMessage.includes('failed') ? 'text-red-400' : 'text-green-400'}`}>
                           {uploadMessage}
                         </p>
                       )}
