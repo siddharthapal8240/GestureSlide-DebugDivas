@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import demoGif from '../assets/demo.gif';
 import {
   Aperture as Gesture,
   Pencil,
@@ -167,27 +168,29 @@ const FeaturesSection = () => {
           className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-3xl p-12 relative overflow-hidden border border-blue-500/20"
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-3xl font-bold text-white mb-6">
-                Experience the Future of Presentations
-              </h3>
-              <p className="text-lg text-gray-300 mb-8">
-                Our advanced gesture recognition system allows you to control
-                your presentations with natural hand movements, making your
-                presentations more engaging and interactive.
-              </p>
-              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/25">
-                Try Demo
-              </button>
-            </div>
-            <div className="relative">
-              <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-2xl border border-blue-500/20">
-                <div className="bg-gray-800 w-full h-full flex items-center justify-center text-gray-400 text-lg">
-                  Interactive Demo Preview
-                </div>
-              </div>
-            </div>
-          </div>
+  <div>
+    <h3 className="text-3xl font-bold text-white mb-6">
+      Experience the Future of Presentations
+    </h3>
+    <p className="text-lg text-gray-300 mb-8">
+      Our advanced gesture recognition system allows you to control
+      your presentations with natural hand movements, making your
+      presentations more engaging and interactive.
+    </p>
+    <button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/25">
+      Try Demo
+    </button>
+  </div>
+  <div className="relative">
+    <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-2xl border border-blue-500/20">
+    <img
+        src={demoGif}
+        alt="Interactive Demo Preview"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+</div>
         </motion.div>
       </div>
     </div>

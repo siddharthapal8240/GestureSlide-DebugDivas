@@ -1,20 +1,18 @@
-import { useState } from 'react';
-import { FaUpload, FaHistory, FaPlay, FaPen, FaTimes } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { FaUpload, FaHistory, FaPlay, FaTimes } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 
 const Dashboard = () => {
-  const [selectedTab, setSelectedTab] = useState('new');
+  const [selectedTab, setSelectedTab] = useState('new-presentation');
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadMessage, setUploadMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(''); // Store the Cloudinary URL
-  const [presentations] = useState([
-    { id: 1, name: 'Q1 Review', date: '2025-03-15', slides: 24 },
-    { id: 2, name: 'Product Launch', date: '2025-03-10', slides: 18 },
-    { id: 3, name: 'Team Update', date: '2025-03-05', slides: 12 },
-  ]);
+  const [presentations, setPresentations] = useState([]); // State for fetched presentations
+  const [historyLoading, setHistoryLoading] = useState(false); // Loading state for history
+  const [historyError, setHistoryError] = useState(''); // Error state for history
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -82,6 +80,28 @@ const Dashboard = () => {
     }
   };
 
+  // Fetch presentation history from the backend
+  const fetchPresentations = async () => {
+    setHistoryLoading(true);
+    setHistoryError('');
+    try {
+      const response = await axios.get('http://localhost:5001/api/presentations');
+      setPresentations(response.data); // Assuming response.data is an array of presentations
+    } catch (error) {
+      setHistoryError('Failed to load presentation history.');
+      console.error('Fetch presentations error:', error);
+    } finally {
+      setHistoryLoading(false);
+    }
+  };
+
+  // Fetch data when the "History" tab is selected
+  useEffect(() => {
+    if (selectedTab === 'history') {
+      fetchPresentations();
+    }
+  }, [selectedTab]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
       <Navbar />
@@ -90,12 +110,12 @@ const Dashboard = () => {
           <div className="border-b border-gray-700">
             <nav className="-mb-px flex">
               <button
-                onClick={() => setSelectedTab('new')}
+                onClick={() => setSelectedTab('new-presentation')}
                 className={`${
-                  selectedTab === 'new'
+                  selectedTab === 'new-presentation'
                     ? 'border-blue-500 text-blue-400'
                     : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
-                } w-1/3 py-4 px-1 text-center border-b-2 font-medium transition-colors duration-200`}
+                } w-1/2 py-4 px-1 text-center border-b-2 font-medium transition-colors duration-200`}
               >
                 New Presentation
               </button>
@@ -105,86 +125,63 @@ const Dashboard = () => {
                   selectedTab === 'history'
                     ? 'border-blue-500 text-blue-400'
                     : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
-                } w-1/3 py-4 px-1 text-center border-b-2 font-medium transition-colors duration-200`}
+                } w-1/2 py-4 px-1 text-center border-b-2 font-medium transition-colors duration-200`}
               >
                 History
-              </button>
-              <button
-                onClick={() => setSelectedTab('upload')}
-                className={`${
-                  selectedTab === 'upload'
-                    ? 'border-blue-500 text-blue-400'
-                    : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300'
-                } w-1/3 py-4 px-1 text-center border-b-2 font-medium transition-colors duration-200`}
-              >
-                Upload
               </button>
             </nav>
           </div>
 
           <div className="p-6">
-            {selectedTab === 'new' && (
-              <div className="text-center py-12">
-                <div className="bg-gray-900/50 p-8 rounded-xl border border-blue-500/30">
-                  <FaPen className="mx-auto h-12 w-12 text-blue-400" />
-                  <h3 className="mt-4 text-xl font-medium text-white">Start New Presentation</h3>
-                  <p className="mt-2 text-gray-400">Create a new presentation with gesture controls</p>
-                  <button className="mt-6 bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 shadow-lg">
-                    Create Presentation
-                  </button>
-                </div>
-              </div>
-            )}
-
             {selectedTab === 'history' && (
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-700">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Name
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Slides
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-700">
-                    {presentations.map((presentation) => (
-                      <tr key={presentation.id} className="hover:bg-gray-750">
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-300">{presentation.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-300">{presentation.date}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-300">{presentation.slides}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex space-x-4">
-                            <button className="text-blue-400 hover:text-blue-300 transition duration-200">
-                              View
-                            </button>
-                            <button className="text-green-400 hover:text-green-300 transition duration-200">
-                              <FaPlay className="h-5 w-5" />
-                            </button>
-                          </div>
-                        </td>
+                {historyLoading ? (
+                  <div className="text-center py-12 text-gray-400">Loading history...</div>
+                ) : historyError ? (
+                  <div className="text-center py-12 text-red-400">{historyError}</div>
+                ) : presentations.length === 0 ? (
+                  <div className="text-center py-12 text-gray-400">No presentation history available.</div>
+                ) : (
+                  <table className="min-w-full divide-y divide-gray-700">
+                    <thead>
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                          Created Date
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                          Actions
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-gray-700">
+                      {presentations.map((presentation) => (
+                        <tr key={presentation.id} className="hover:bg-gray-750">
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-300">{presentation.date}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex space-x-4">
+                              <button className="text-blue-400 hover:text-blue-300 transition duration-200">
+                                View
+                              </button>
+                              <button className="text-green-400 hover:text-green-300 transition duration-200">
+                                <FaPlay className="h-5 w-5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             )}
 
-            {selectedTab === 'upload' && (
+            {selectedTab === 'new-presentation' && (
               <div className="text-center py-12">
                 <div className="bg-gray-900/50 p-8 rounded-xl border border-blue-500/30">
                   {!selectedFile && (
                     <>
                       <FaUpload className="mx-auto h-12 w-12 text-blue-400" />
-                      <h3 className="mt-4 text-xl font-medium text-white">Upload Presentation</h3>
+                      <h3 className="mt-4 text-xl font-medium text-white">New Presentation</h3>
                       <p className="mt-2 text-gray-400">Upload your PowerPoint or PDF presentation</p>
                     </>
                   )}
