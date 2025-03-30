@@ -28,15 +28,15 @@ const DemoSection = () => {
           className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-blue-500/30"
         >
           <div className="aspect-w-16 aspect-h-9">
-            <iframe
-              className="w-full h-full"
-              src="https://youtu.be/drqGbz2QgLk?si=21mT11wYIGeLumet"
-              title="GestureSlide Demo"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
+  <iframe
+    className="w-full h-full"
+    src="https://www.youtube.com/embed/-astPy8iFCM"
+    title="GestureSlide Demo"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  ></iframe>
+</div>
         </motion.div>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
