@@ -9,10 +9,10 @@ const Dashboard = () => {
   const [uploadMessage, setUploadMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState(''); // Store the Cloudinary URL
-  const [presentations, setPresentations] = useState([]); // State for fetched presentations
-  const [historyLoading, setHistoryLoading] = useState(false); // Loading state for history
-  const [historyError, setHistoryError] = useState(''); // Error state for history
+  const [pdfUrl, setPdfUrl] = useState(''); 
+  const [presentations, setPresentations] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false); 
+  const [historyError, setHistoryError] = useState(''); 
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -20,7 +20,7 @@ const Dashboard = () => {
       setSelectedFile(file);
       setUploadMessage('');
       setIsUploaded(false);
-      setPdfUrl(''); // Reset PDF URL when a new file is selected
+      setPdfUrl(''); 
     }
   };
 
@@ -51,7 +51,7 @@ const Dashboard = () => {
       });
       setUploadMessage('File uploaded successfully');
       setIsUploaded(true);
-      setPdfUrl(response.data.pdfUrl); // Store the returned Cloudinary URL
+      setPdfUrl(response.data.pdfUrl); 
     } catch (error) {
       setUploadMessage('Upload failed. Please try again.');
       console.error('Upload error:', error);
