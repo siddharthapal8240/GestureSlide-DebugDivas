@@ -21,7 +21,7 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage });
 
-// Upload endpoint (only uploads and saves to MongoDB)
+// Upload endpoint (uploads and saves to MongoDB)
 router.post('/upload', upload.single('pdf'), async (req, res) => {
   try {
     console.log('Upload request received');
@@ -34,6 +34,7 @@ router.post('/upload', upload.single('pdf'), async (req, res) => {
 
     const presentation = new Presentation({
       pdfUrl: req.file.path,
+      // uploadedAt is set automatically by default: Date.now
     });
     console.log('Saving to MongoDB...');
     await presentation.save();

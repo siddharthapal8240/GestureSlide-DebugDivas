@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 import uploadRoutes from './routes/upload.js';
 import { spawn } from 'child_process';
+import Presentation from './models/Presentation.js'; // Import the model
 
 dotenv.config();
 
@@ -35,12 +36,23 @@ app.use(cors({
 
 app.use(express.json());
 
+// Fetch presentation history
+app.get('/api/presentations', async (req, res) => {
+  try {
+    const presentations = await Presentation.find().sort({ uploadedAt: -1 }); // Sort by upload date, newest first
+    res.json(presentations);
+  } catch (error) {
+    console.error('Error fetching presentations:', error);
+    res.status(500).json({ error: 'Failed to fetch presentations' });
+  }
+});
+
 app.use('/api', uploadRoutes);
 
 // Spawn main.py
 const pythonProcess = spawn('python', ['service/main.py'], {
   cwd: process.cwd(),
-  stdio: 'inherit', // Share stdout/stderr with Node.js
+  stdio: 'inherit',
 });
 
 pythonProcess.on('error', (err) => {

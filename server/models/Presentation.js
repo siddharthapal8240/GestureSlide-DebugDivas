@@ -9,7 +9,6 @@ const presentationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  
 });
 
 export default mongoose.model('Presentation', presentationSchema);

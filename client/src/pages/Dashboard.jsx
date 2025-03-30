@@ -9,10 +9,10 @@ const Dashboard = () => {
   const [uploadMessage, setUploadMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState(''); 
+  const [pdfUrl, setPdfUrl] = useState('');
   const [presentations, setPresentations] = useState([]);
-  const [historyLoading, setHistoryLoading] = useState(false); 
-  const [historyError, setHistoryError] = useState(''); 
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState('');
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -20,7 +20,7 @@ const Dashboard = () => {
       setSelectedFile(file);
       setUploadMessage('');
       setIsUploaded(false);
-      setPdfUrl(''); 
+      setPdfUrl('');
     }
   };
 
@@ -51,7 +51,7 @@ const Dashboard = () => {
       });
       setUploadMessage('File uploaded successfully');
       setIsUploaded(true);
-      setPdfUrl(response.data.pdfUrl); 
+      setPdfUrl(response.data.pdfUrl);
     } catch (error) {
       setUploadMessage('Upload failed. Please try again.');
       console.error('Upload error:', error);
@@ -80,13 +80,12 @@ const Dashboard = () => {
     }
   };
 
-  // Fetch presentation history from the backend
   const fetchPresentations = async () => {
     setHistoryLoading(true);
     setHistoryError('');
     try {
       const response = await axios.get('http://localhost:5001/api/presentations');
-      setPresentations(response.data); // Assuming response.data is an array of presentations
+      setPresentations(response.data);
     } catch (error) {
       setHistoryError('Failed to load presentation history.');
       console.error('Fetch presentations error:', error);
@@ -95,7 +94,20 @@ const Dashboard = () => {
     }
   };
 
-  // Fetch data when the "History" tab is selected
+  const handleView = (pdfUrl) => {
+    window.open(pdfUrl, '_blank'); // Open PDF in new tab
+  };
+
+  const handlePlay = async (pdfUrl) => {
+    try {
+      await axios.post('http://localhost:5001/api/start', { pdfUrl });
+      alert('Presentation started!');
+    } catch (error) {
+      console.error('Start presentation error:', error);
+      alert('Failed to start presentation.');
+    }
+  };
+
   useEffect(() => {
     if (selectedTab === 'history') {
       fetchPresentations();
@@ -155,14 +167,22 @@ const Dashboard = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-700">
                       {presentations.map((presentation) => (
-                        <tr key={presentation.id} className="hover:bg-gray-750">
-                          <td className="px-6 py-4 whitespace-nowrap text-gray-300">{presentation.date}</td>
+                        <tr key={presentation._id} className="hover:bg-gray-750">
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-300">
+                            {new Date(presentation.uploadedAt).toLocaleDateString()}
+                          </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex space-x-4">
-                              <button className="text-blue-400 hover:text-blue-300 transition duration-200">
+                              <button
+                                onClick={() => handleView(presentation.pdfUrl)}
+                                className="text-blue-400 hover:text-blue-300 transition duration-200"
+                              >
                                 View
                               </button>
-                              <button className="text-green-400 hover:text-green-300 transition duration-200">
+                              <button
+                                onClick={() => handlePlay(presentation.pdfUrl)}
+                                className="text-green-400 hover:text-green-300 transition duration-200"
+                              >
                                 <FaPlay className="h-5 w-5" />
                               </button>
                             </div>
